@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,7 +12,7 @@ public class Adventure41 {
 				
 		Integer[][][] arrayTodo= new Integer[100][5][5];
 		
-		numerosGanadores = MainWave.pasarArrayInt(numerosGanadores);
+		numerosGanadores = pasarArrayInt(numerosGanadores);
 		arrayTodo = MainWave.rellenarArray(arrayTodo);
 		int comprobar=0;
 		
@@ -61,9 +64,79 @@ public class Adventure41 {
 	}
 	
 	//posible metodo comprobar
+	public static ArrayList<Integer> pasarArrayInt(ArrayList<Integer> direcciones) {
+		try {
+			
+			FileReader archivo= new FileReader("C:\\Users\\jaime\\eclipse-workspace\\WaveDucks\\src\\input.txt");
+			BufferedReader br = new BufferedReader(archivo);
+			String palabra = br.readLine();
+			String[] splitArray = (String[]) palabra.split(",");
+			
+			for(int i=0;i<splitArray.length;i++) {
+				direcciones.add(Integer.valueOf(splitArray[i]));
+			}
+			
+			
+			archivo.close();
+			br.close();
+			
+		}catch(IOException e) {
+			System.out.println("Error");
+		}
+		
+		
+		return direcciones;
+	}
 	
+	public static Integer[][][] rellenarArray(Integer[][][] direcciones) {
+		ArrayList <String> cartones = new ArrayList<String>();
+		cartones = pasarArrayCartones(cartones);
+		String[] lineas;
+		String[] numeros;
+		
+		
+		for(int i=0;i<cartones.size();i++) {
+			lineas = (String[]) cartones.get(i).split("\n"); 
+			for(int j=0;j<5;j++) {
+				numeros = lineas[j].trim().split("\\s+");
+				for(int k=0;k<5;k++) {
+					direcciones[i][j][k]=Integer.parseInt(numeros[k].trim());
+				
+				}
+			}
+		}
+		
+			
+		return direcciones;
+	}
 	
-	
+	public static ArrayList<String> pasarArrayCartones(ArrayList<String> direcciones) {
+		String texto="";
+		try {
+			FileReader archivo= new FileReader("C:\\Users\\jaime\\eclipse-workspace\\WaveDucks\\src\\input.txt");
+			BufferedReader br = new BufferedReader(archivo);
+			br.readLine();
+			br.readLine();
+			String palabra=br.readLine();
+			while (palabra !=null) {
+				texto=texto+palabra+"\n";
+				palabra=br.readLine();
+				
+			}
+			archivo.close();
+			br.close();
+			
+		}catch(IOException e) {
+			System.out.println("Error");
+		}
+		
+		String[] splitsalto = (String[]) texto.split("\n\n");
+		for(int i=0;i<splitsalto.length;i++) {
+			direcciones.add(splitsalto[i]);
+		}
+		
+		return direcciones;
+	}
 	
 	
 }
